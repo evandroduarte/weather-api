@@ -1,7 +1,6 @@
-import os
 import re
-from bson import json_util
 from datetime import datetime, timedelta
+from bson import json_util
 from flask import Flask, jsonify, request
 from utils.db import init_collection
 from utils.logger_startup import logger
@@ -24,7 +23,6 @@ def get_weather():
     Args:
     - city (str): The name of the city.
     - language (str): The language for the weather data.
-    - units (str): The units for temperature measurement.
 
     Returns:
     jsonify: JSON response containing the city name and forecast data.
@@ -32,7 +30,6 @@ def get_weather():
     try:
         city = request.args.get("city", default="Brasilia", type=str)
         language = request.args.get("language", default="pt_br", type=str)
-        units = request.args.get("units", default="metric", type=str)
 
         city_data = get_city_data(city)
 
@@ -45,7 +42,7 @@ def get_weather():
             city_data.get("name"),
         )
 
-        weather_data = get_weather_data(city_lat, city_lon, language, units)
+        weather_data = get_weather_data(city_lat, city_lon, language)
 
         if not weather_data:
             return jsonify({"error": "Failed to get weather data"}), 500
@@ -58,7 +55,6 @@ def get_weather():
             {
                 "city": city,
                 "language": language,
-                "units": units,
                 "forecast": daily_forecast,
                 "timestamp": datetime.now(),
             }
@@ -81,7 +77,6 @@ def get_previous_requests():
     - end_date (str): The end date for the query (YYYY-MM-DD).
     - city (str): The name of the city.
     - language (str): The language for the weather data.
-    - units (str): The units for temperature measurement.
 
     Returns:
     Response: JSON response containing the requested weather data.

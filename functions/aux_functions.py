@@ -36,7 +36,7 @@ def get_city_data(city):
         return None
 
 
-def get_weather_data(city_lat, city_lon, language, units):
+def get_weather_data(city_lat, city_lon, language):
     """
     Get weather forecast data for a given city from the OpenWeatherMap API.
 
@@ -44,14 +44,13 @@ def get_weather_data(city_lat, city_lon, language, units):
     - city_lat (float): The latitude of the city.
     - city_lon (float): The longitude of the city.
     - language (str): The language for the weather data.
-    - units (str): The units for temperature measurement.
 
     Returns:
     dict: Weather forecast data for the specified city.
     """
     try:
         response = requests.get(
-            f"{WEATHER_API_URL}/data/2.5/forecast?lat={city_lat}&lon={city_lon}&lang={language}&units={units}&appid={OPENWEATHERMAP_API_KEY}"
+            f"{WEATHER_API_URL}/data/2.5/forecast?lat={city_lat}&lon={city_lon}&lang={language}&units=metric&appid={OPENWEATHERMAP_API_KEY}"
         )
         response.raise_for_status()
         return response.json()

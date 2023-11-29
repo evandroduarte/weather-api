@@ -6,7 +6,7 @@ from functions.aux_functions import (
     get_weather_data,
     format_forecast_data,
 )
-import app
+from app import app
 
 
 class TestGetCityData(unittest.TestCase):
@@ -51,7 +51,7 @@ class TestGetWeatherData(unittest.TestCase):
         mock_response.json.return_value = expected_result
         mock_get.return_value = mock_response
 
-        result = get_weather_data(123, 456, "en", "metric")
+        result = get_weather_data(123, 456, "en")
         self.assertEqual(result, expected_result)
 
     @patch("functions.aux_functions.requests.get")
@@ -61,8 +61,7 @@ class TestGetWeatherData(unittest.TestCase):
         city_lat = 51.5074
         city_lon = -0.1278
         language = "en"
-        units = "metric"
-        result = get_weather_data(city_lat, city_lon, language, units)
+        result = get_weather_data(city_lat, city_lon, language)
 
         self.assertIsNone(result)
 
@@ -121,13 +120,15 @@ class TestFormatForecastData(unittest.TestCase):
         self.assertEqual(result, expected_result)
 
 
+
 class TestGetWeather(unittest.TestCase):
+
     def setUp(self):
         app.testing = True
         self.client = app.test_client()
 
     def test_get_weather_success(self):
-        response = self.client.get("/weather?city=Brasilia&language=pt_br&units=metric")
+        response = self.client.get("/weather?city=Brasilia&language=pt_br")
         data = response.get_json()
 
         self.assertEqual(response.status_code, 200)
@@ -136,7 +137,7 @@ class TestGetWeather(unittest.TestCase):
 
     def test_get_weather_invalid_city(self):
         response = self.client.get(
-            "/weather?city=InvalidCity&language=pt_br&units=metric"
+            "/weather?city=InvalidCity&language=pt_br"
         )
         data = response.get_json()
 
@@ -157,7 +158,7 @@ class TestGetRequests(unittest.TestCase):
 
     def test_get_previous_requests_with_query_params(self):
         response = self.client.get(
-            "/requests?start_date=2022-01-01&end_date=2022-01-31&city=London&language=en&units=metric"
+            "/requests?start_date=2022-01-01&end_date=2022-01-31&city=London&language=en"
         )
         self.assertEqual(response.status_code, 200)
         self.assertEqual(response.content_type, "application/json")

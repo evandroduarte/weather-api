@@ -1,6 +1,6 @@
 # weather-api
 
-Essa API permite que você solicite a previsão do tempo para os próximos cinco dias para uma cidade específica. Além disso, ela armazena os dados da previsão no MongoDB e fornece um endpoint para recuperar solicitações de previsão do tempo passadas.
+Essa API permite que você solicite a previsão do tempo para os próximos cinco dias para uma cidade específica através da API [OpenWeatherMap](https://openweathermap.org/). Além disso, ela armazena os dados da previsão no MongoDB e fornece um endpoint para recuperar solicitações de previsão do tempo passadas.
 
 ## Pré-requisitos 
 
@@ -43,8 +43,8 @@ docker exec -it web /bin/bash -c "cd /app && python -m unittest discover -s test
   - Parâmetros:
     - `city` (str): Nome da cidade (default: Brasilia)
     - `language` (str): Linguagem para descrição do clima (default: pt_br)
-    - `units` (str): Unidade de medida dos resultados (default: metric)
   - Exemplo Resposta:
+    ```
     - { "city_name": "Brasília",
         "forecasts": [
             {
@@ -73,7 +73,7 @@ docker exec -it web /bin/bash -c "cd /app && python -m unittest discover -s test
                 "min_temperature": "293.39°C",
                 "temperature": "293.39°C",
                 "weather_description": "Overcast clouds"
-            }, ... ]}
+            }, ... ]}```
 
 
 - **Retrieve Past Requests:**
@@ -84,9 +84,9 @@ docker exec -it web /bin/bash -c "cd /app && python -m unittest discover -s test
     - `end_date` (str): Data final (YYYY-MM-DD)
     - `city (str)`: Nome da cidade (opcional)
     - `language` (str): The language for the weather data (opcional)
-    - `units` (str): Unidade de medida dos resultados (opcional)
+    - `start_date` e `end_date` devem ser usados em conjunto
   - Exemplo Resposta:
-    [
+    ```[
         {
             "_id": {
                 "$oid": "6567a0d0da696d6ae8dc7616"
@@ -112,4 +112,22 @@ docker exec -it web /bin/bash -c "cd /app && python -m unittest discover -s test
                     "humidity": "58%",
                     "feels_like": "24.62°C",
                     "weather_description": "Nublado"
-                }], ... }]
+                }], ... }]```
+
+## Testes Insomnia
+
+- /weather
+![Screenshot from 2023-11-29 20-17-34](https://github.com/evandroduarte/weather-api/assets/39135867/3c7a9df1-0cca-41bc-a9c4-c6d961c5874a)
+
+- /weather (Filtro composto)
+![Screenshot from 2023-11-29 20-47-15](https://github.com/evandroduarte/weather-api/assets/39135867/8d12ebaa-9c2d-4f99-8f4e-f1b874f6c167)
+
+- /requests (Sem filtro)
+![Screenshot from 2023-11-29 20-17-49](https://github.com/evandroduarte/weather-api/assets/39135867/5830dc6a-28ad-4c42-8397-07f3fbfcc630)
+
+- /requests (Filtro cidade)
+![Screenshot from 2023-11-29 20-18-17](https://github.com/evandroduarte/weather-api/assets/39135867/e79ce967-d0a9-44c9-9f4f-0e1b8794e390)
+
+- /requests (Filtro composto)
+![Screenshot from 2023-11-29 20-20-29](https://github.com/evandroduarte/weather-api/assets/39135867/468559d1-83ec-4811-900a-161639f5a113)
+

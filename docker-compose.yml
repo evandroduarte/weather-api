@@ -1,0 +1,22 @@
+version: '3'
+services:
+  web:
+    container_name: web
+    build:
+      context: .
+      dockerfile: Dockerfile.dev
+    ports:
+      - "5000:5000"
+    depends_on:
+      - mongodb
+    environment:
+      - OPENWEATHERMAP_API_KEY=54cff1f2dde6ebf0db4411580b9479e0
+      - WEATHER_API_URL=http://api.openweathermap.org
+      - MONGODB_URI=mongodb://mongodb:27017/
+    volumes:
+      - .:/app
+  mongodb:
+    image: "mongo:latest"
+    container_name: mongodb
+    ports:
+      - "27017:27017"
